@@ -1,13 +1,13 @@
 public class Dijkstra {
 
     static Path done[];
-    static TreeHeap priorityQueue;
+    static ArrayHeap priorityQueue;
     static Integer id;
 
     public Dijkstra() {
         this.done = new Path[100];
-        this.priorityQueue = new TreeHeap();
-        this.id=0;
+        this.priorityQueue = new ArrayHeap(100);
+        this.id = 0;
     }
 
     public static void main(String[] args) {
@@ -25,12 +25,12 @@ public class Dijkstra {
             args[1] = startingCity[i];
             String to = args[0];
 
-            long t0 = System.nanoTime();
             City fromCity = map.lookup(from);
 
             City toCity = map.lookup(to);
 
-            priorityQueue.enqueue(new Path(fromCity, null, 0, 0));
+            long t0 = System.nanoTime();
+            priorityQueue.bubble(new Path(fromCity, null, 0, 0));
             findPaths(fromCity, toCity);
             long time = (System.nanoTime() - t0) / 1_000_000;
             for (Path p : done) {
@@ -44,9 +44,9 @@ public class Dijkstra {
 
     public static void findPaths(City from, City to) {
 
-        Path currentPath = priorityQueue.dequeue();
+        Path currentPath = priorityQueue.sink();
 
-        if (currentPath.getDestination()==to) {
+        if (currentPath.getDestination() == to) {
             return;
         }
 
@@ -57,15 +57,15 @@ public class Dijkstra {
 
                 Connection conn = from.connections[i];
                 if (conn != null) {
-                    if (conn.getDestination().getId()!=null) {
-                        if (done[currentPath.getIndex()].getDist()<conn.getTime()) {
-                            done[currentPath.getIndex()]=new Path(conn.getDestination(), from, conn.getTime(), conn.getDestination().getId());
+                    if (conn.getDestination().getId() != null) {
+                        if (done[currentPath.getIndex()].getDist() < conn.getTime()) {
+                            done[currentPath.getIndex()] = new Path(conn.getDestination(), from, conn.getTime(),
+                                    conn.getDestination().getId());
                         }
-                    }
-                    else
-                    {
+                        findPaths(conn.getDestination(), to);
+                    } else {
                         conn.getDestination().setId(id);
-                        priorityQueue.enqueue(new Path(from, to,conn.getTime() , id));
+                        priorityQueue.bubble(new Path(from, to, conn.getTime(), id));
                         id++;
                     }
 
