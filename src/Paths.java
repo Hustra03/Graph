@@ -1,6 +1,7 @@
 public class Paths {
     static City[] path;
     static int sp;
+    static Integer maximumLength;
 
     public static void main(String[] args) {
         Map map = new Map("src\\trains.csv");
@@ -27,6 +28,7 @@ public class Paths {
     public Paths() {
         path = new City[54];
         sp = 0;
+        maximumLength = null;
     }
 
     private static Integer shortest(City from, City to) {
@@ -44,10 +46,17 @@ public class Paths {
                 Connection conn = from.connections[i];
                 if (conn != null) {
 
-                    Integer timeNext = shortest(conn.getDestination(), to);
+                    if (maximumLength == null || maximumLength - conn.getTime() > 0) {
 
-                    if (timeNext != null && (shrt- conn.getTime()) > timeNext) {
-                        shrt = timeNext + conn.getTime();
+                        Integer timeNext = shortest(conn.getDestination(), to);
+
+                        if (timeNext != null && (shrt - conn.getTime()) > timeNext) {
+                            shrt = timeNext + conn.getTime();
+                            if (maximumLength == null || conn.getTime() > maximumLength) {
+
+                                maximumLength = conn.getTime();
+                            }
+                        }
                     }
 
                 }
