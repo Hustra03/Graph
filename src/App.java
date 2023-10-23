@@ -19,14 +19,4 @@ public class App {
         city1.cityPrint();
         city2.cityPrint();
     }
-
-    private static Integer hash(String name) {
-
-        int mod = 541;
-        int hash = 0;
-        for (int i = 0; i < name.length(); i++) {
-            hash = (hash * 31 % mod) + name.charAt(i);
-        }
-        return hash % mod;
-    }
 }
