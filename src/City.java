@@ -1,6 +1,3 @@
-import java.util.LinkedList;
-import java.util.List;
-
 public class City {
     String cityName;
     Connection connections[];
@@ -26,9 +23,6 @@ public class City {
         while (true) {
             if (connections[hash] == null) {
                 connections[hash] = newConnection;
-                break;
-            }
-            if (connections[hash] == newConnection) {
                 break;
             }
             hash += 1;

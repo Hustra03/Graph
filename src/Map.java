@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.List;
-
 public class Map {
 
     private City cities[];
@@ -22,35 +20,15 @@ public class Map {
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
                 String firstCity = row[0];
-                int hash1 = hash(firstCity);
                 String secondCity = row[1];
-                int hash2 = hash(secondCity);
                 int time = Integer.valueOf(row[2]);
 
-                while (true) {
-                    if (cities[hash1] == null) {
-                        cities[hash1] = new City(firstCity);
-                        break;
-                    }
-                    if (cities[hash1].getName() == firstCity) {
-                        break;
-                    }
-                    hash1 += 1;
-                }
+                City first = lookup(firstCity);
 
-                while (true) {
-                    if (cities[hash2] == null) {
-                        cities[hash2] = new City(secondCity);
-                        break;
-                    }
-                    if (cities[hash2].getName() == secondCity) {
-                        break;
-                    }
-                    hash2 += 1;
-                }
+                City second = lookup(secondCity);
 
-                cities[hash1].connect(cities[hash2], time);
-                cities[hash2].connect(cities[hash1], time);
+                first.connect(second, time);
+                second.connect(first, time);
             }
         } catch (Exception e) {
             System.out.println(" file " + file + " not found or corrupt" + e);
@@ -61,17 +39,23 @@ public class Map {
         int hash = hash(cityName);
         while (true) {
             if (cities[hash] == null) {
-                return null;
+                cities[hash] = new City(cityName);
+                break;
+            } else {
+                if (cities[hash].getName() == cityName) {
+                    break;
+                }
             }
-            if (cities[hash].getName() == cityName) {
-                return cities[hash];
-            }
+
             hash += 1;
         }
+        return cities[hash];
     }
 
     public void mapPrint() {
-        for (City city : cities) {
+        for (int j = 0; j < cities.length; j++) {
+
+            City city = cities[j];
             if (city != null) {
                 System.out.println("Name: " + city.getName());
                 Connection connections[] = city.getConnections();
