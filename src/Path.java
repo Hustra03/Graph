@@ -22,5 +22,9 @@ public class Path {
     public City getDestination()
     {
         return city;
+    }    
+    public City getPrevious()
+    {
+        return city;
     }
 }
