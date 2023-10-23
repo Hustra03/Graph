@@ -8,8 +8,8 @@ public class Paths {
         Paths path = new Paths();
         args = new String[3];
         String startingCity[] = { "Malmö", "Malmö", "Göteborg", "Göteborg", "Stockholm", "Stockholm", "Sundsvall",
-                "Umeå" };
-        String endingCity[] = { "Göteborg", "Stockholm", "Stockholm", "Umeå", "Sundsvall", "Umeå", "Umeå", "Göteborg" };
+                "Umeå","Stockholm" };
+        String endingCity[] = { "Göteborg", "Stockholm", "Stockholm", "Umeå", "Sundsvall", "Umeå", "Umeå", "Göteborg","Kiruna" };
 
         for (int i = 0; i < endingCity.length; i++) {
 
@@ -53,8 +53,7 @@ public class Paths {
                         if (timeNext != null && (shrt - conn.getTime()) > timeNext) {
                             shrt = timeNext + conn.getTime();
                             if (maximumLength == null || conn.getTime() > maximumLength) {
-
-                                maximumLength = conn.getTime();
+                                maximumLength = timeNext + conn.getTime();
                             }
                         }
                     }
