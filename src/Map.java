@@ -28,7 +28,6 @@ public class Map {
                 City second = lookup(secondCity);
 
                 first.connect(second, time);
-                second.connect(first, time);
             }
         } catch (Exception e) {
             System.out.println(" file " + file + " not found or corrupt" + e);
@@ -57,15 +56,7 @@ public class Map {
 
             City city = cities[j];
             if (city != null) {
-                System.out.println("Name: " + city.getName());
-                Connection connections[] = city.getConnections();
-                for (int i = 0; i < connections.length; i++) {
-
-                    if (connections[i] != null) {
-                        System.out.println("\t Connected: " + connections[i].destinationCity.getName() + "| Time: "
-                                + connections[i].getTime());
-                    }
-                }
+                city.cityPrint();
             }
         }
 

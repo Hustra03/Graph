@@ -37,4 +37,15 @@ public class City {
     public Connection[] getConnections() {
         return connections;
     }
+
+    public void cityPrint()
+    {
+        System.out.println(this.cityName);
+        for (Connection connection : connections) {
+            if (connection != null) {
+                System.out.println("\t Connected: " + connection.destinationCity.getName() + "| Time: "
+                        + connection.getTime());
+            }
+        }
+    }
 }

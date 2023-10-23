@@ -19,18 +19,17 @@ public class Naive {
             return null;
 
         if (from == to)
-            return 0;
+            return max;
+            
         Integer shrt = Integer.MAX_VALUE;
 
         for (int i = 0; i < from.connections.length; i++) {
-            
+
             if (from.connections != null) {
                 Connection conn = from.connections[i];
                 if (conn != null) {
-                    if (max-conn.getTime()>0) {
-                        if (shrt < shortest(conn.getDestination(), to, max-conn.getTime())) {
-                            shrt = shortest(conn.getDestination(), to, max-conn.getTime());
-                        }
+                    if (max - conn.getTime() > 0) {
+                        shrt = shortest(conn.getDestination(), to, max - conn.getTime());
 
                     }
                 }
