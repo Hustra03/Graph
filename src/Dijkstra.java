@@ -4,15 +4,15 @@ public class Dijkstra {
     static ArrayHeap priorityQueue;
     static Integer id;
 
-    public Dijkstra() {
-        this.done = new Path[100];
-        this.priorityQueue = new ArrayHeap(100);
+    public Dijkstra(int Length) {
+        this.done = new Path[Length];
+        this.priorityQueue = new ArrayHeap(Length);
         this.id = 0;
     }
 
     public static void main(String[] args) {
         Map map = new Map("src\\trains.csv");
-        Dijkstra Dijkstra = new Dijkstra();
+        Dijkstra Dijkstra = new Dijkstra(300);
         args = new String[3];
         String startingCity[] = { "Malmö" };
 
