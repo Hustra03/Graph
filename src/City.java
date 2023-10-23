@@ -1,12 +1,14 @@
 public class City {
     String cityName;
+    Integer id;
     Connection connections[];
 
     private final int mod = 541;
 
-    City(String name) {
+    City(String name, Integer id) {
         this.cityName = name;
         this.connections = new Connection[541];
+        this.id=id;
     }
 
     private Integer hash(String name) {
@@ -39,7 +41,7 @@ public class City {
 
     public void cityPrint()
     {
-        System.out.println(this.cityName);
+        System.out.println(this.cityName + " id " + this.id);
         for (Connection connection : connections) {
             if (connection != null) {
                 System.out.println("\t Connected: " + connection.destinationCity.getName() + "| Time: "
