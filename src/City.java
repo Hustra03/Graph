@@ -18,11 +18,10 @@ public class City {
     }
 
     public void connect(City toConnect, int time) {
-        Connection newConnection = new Connection(time, toConnect);
         int hash = hash(toConnect.getName());
         while (true) {
             if (connections[hash] == null) {
-                connections[hash] = newConnection;
+                connections[hash] =  new Connection(time, toConnect);;
                 break;
             }
             hash += 1;

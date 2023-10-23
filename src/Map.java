@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+
 public class Map {
 
-    private City cities[];
+    City cities[];
     private final int mod = 541;
 
     private Integer hash(String name) {
@@ -19,6 +20,9 @@ public class Map {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
+                // System.out.println("row 0 : " + row[0]);
+                // System.out.println("row 1 : " + row[1]);
+                // System.out.println("row 2 : " + row[2]);
                 String firstCity = row[0];
                 String secondCity = row[1];
                 int time = Integer.valueOf(row[2]);
@@ -28,6 +32,9 @@ public class Map {
                 City second = lookup(secondCity);
 
                 first.connect(second, time);
+
+                second.connect(first, time);
+
             }
         } catch (Exception e) {
             System.out.println(" file " + file + " not found or corrupt" + e);
@@ -37,18 +44,18 @@ public class Map {
     public City lookup(String cityName) {
         int hash = hash(cityName);
         while (true) {
-            if (cities[hash] == null) {
-                cities[hash] = new City(cityName);
-                break;
-            } else {
-                if (cities[hash].getName() == cityName) {
-                    break;
+            if (cities[hash] != null) {
+                if (cities[hash].getName().equalsIgnoreCase(cityName)) {
+                    return cities[hash];
+                } else {
+                    hash += 1;
                 }
+            } else {
+                cities[hash] = new City(cityName);
+                return cities[hash];
             }
 
-            hash += 1;
         }
-        return cities[hash];
     }
 
     public void mapPrint() {
