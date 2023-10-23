@@ -4,7 +4,6 @@ import java.io.FileReader;
 public class Map {
 
     City cities[];
-    Integer currentId;
     private final int mod = 541;
 
     private Integer hash(String name) {
@@ -17,7 +16,6 @@ public class Map {
 
     public Map(String file) {
         cities = new City[mod];
-        currentId=0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -50,11 +48,10 @@ public class Map {
                 if (cities[hash].getName().equalsIgnoreCase(cityName)) {
                     return cities[hash];
                 } else {
-                    hash += 1;
+                    hash = (hash + 1) % mod;
                 }
             } else {
-                cities[hash] = new City(cityName,currentId);
-                currentId++;
+                cities[hash] = new City(cityName);
                 return cities[hash];
             }
 

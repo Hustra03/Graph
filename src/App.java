@@ -11,8 +11,8 @@ public class App {
     }
 
     public static void cityTest() {
-        City city1 = new City("Stockholm",0);
-        City city2 = new City("Malmö",1);
+        City city1 = new City("Stockholm");
+        City city2 = new City("Malmö");
         city1.cityPrint();
         city1.connect(city2, 29);
         city2.connect(city1, 29);

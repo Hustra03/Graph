@@ -5,10 +5,10 @@ public class City {
 
     private final int mod = 541;
 
-    City(String name, Integer id) {
+    City(String name) {
         this.cityName = name;
         this.connections = new Connection[541];
-        this.id=id;
+        this.id=null;
     }
 
     private Integer hash(String name) {
@@ -38,6 +38,12 @@ public class City {
     public Connection[] getConnections() {
         return connections;
     }
+
+    public Integer getId()
+    {return this.id;}
+
+    public void setId(Integer newId)
+    {this.id=newId;}
 
     public void cityPrint()
     {
