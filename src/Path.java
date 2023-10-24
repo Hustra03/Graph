@@ -13,7 +13,9 @@ public class Path {
 
     public Integer getDist() {
         return this.dist;
-    }
+    } 
+    public void setDist(Integer newDist)
+    {this.dist=newDist;}
 
     public Integer getIndex() {
         return this.index;
@@ -27,4 +29,6 @@ public class Path {
     {
         return city;
     }
+
+
 }

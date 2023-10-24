@@ -31,7 +31,8 @@ public class Dijkstra {
 
             long t0 = System.nanoTime();
             priorityQueue.bubble(new Path(fromCity, null, 0, 0));
-            findPaths(fromCity, toCity);
+            done[0]= new Path(fromCity, null, 0, 0);
+            findPaths2(fromCity, toCity);
             long time = (System.nanoTime() - t0) / 1_000_000;
             for (Path p : done) {
                 if (p != null) {
@@ -119,7 +120,9 @@ public class Dijkstra {
                     if (connectedCity.getId() == null) {
                         id++;
                         connectedCity.setId(id);
-                        done[id] = new Path(connectedCity, from, conn.getTime(), id);findPaths2(connectedCity,to);
+                        done[id] = new Path(connectedCity, from, conn.getTime(), id);
+                        done[id].setDist(done[id].getDist() + done[id-1].getDist());
+                        findPaths2(connectedCity,to);
 
                     } else {
                         if (done[connectedCity.getId()].getDist() > conn.getTime()) {
