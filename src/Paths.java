@@ -7,9 +7,8 @@ public class Paths {
         Map map = new Map("src\\trains.csv");
         Paths path = new Paths();
         args = new String[3];
-        String startingCity[] = { "Malmö", "Malmö", "Göteborg", "Göteborg", "Stockholm", "Stockholm", "Sundsvall",
-                "Umeå","Stockholm" };
-        String endingCity[] = { "Göteborg", "Stockholm", "Stockholm", "Umeå", "Sundsvall", "Umeå", "Umeå", "Göteborg","Kiruna" };
+        String startingCity[] = { "Malmö"};
+        String endingCity[] = { "Göteborg"};
 
         for (int i = 0; i < endingCity.length; i++) {
 

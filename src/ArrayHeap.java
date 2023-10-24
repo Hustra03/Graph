@@ -4,6 +4,7 @@ public class ArrayHeap {
 
     ArrayHeap(int length) {
         this.heap = new Path[length];
+        this.currentMaxIndex=0;
     }
 
     public void bubble(Path value) {

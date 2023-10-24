@@ -5,7 +5,7 @@ public class Path {
 
     public Path(City city, City prevCity, Integer dist) {
         this.city = city;
-        this.city = prevCity;
+        this.prev = prevCity;
         this.dist = dist;
     }
 
@@ -22,7 +22,7 @@ public class Path {
     }
 
     public City getPrevious() {
-        return city;
+        return prev;
     }
 
 }
