@@ -8,7 +8,7 @@ public class Paths {
         Paths path = new Paths();
         args = new String[3];
         String startingCity[] = { "Stockholm"};
-        String endingCity[] = { "Sundsvall"};
+        String endingCity[] = { "Gävle"};
 
         for (int i = 0; i < endingCity.length; i++) {
 

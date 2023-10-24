@@ -16,8 +16,7 @@ public class Dijkstra {
 
         String startingCity[] = { "Stockholm" };
 
-        
-        String endingCity[] = { "Eskilstuna" };
+        String endingCity[] = { "Gävle" };
 
         for (int i = 0; i < startingCity.length; i++) {
 
@@ -25,12 +24,11 @@ public class Dijkstra {
 
             City fromCity = map.lookup(from);
 
-            
             String to = endingCity[i];
             City toCity = map.lookup(to);
 
             long t0 = System.nanoTime();
-            findPaths(fromCity,toCity);
+            findPaths(fromCity, toCity);
             long time = (System.nanoTime() - t0) / 1_000_000;
 
             for (Path p : done) {
@@ -57,7 +55,10 @@ public class Dijkstra {
 
         while (priorityQueue.currentMaxIndex != 0) {
             Path p = priorityQueue.sink();
-         
+
+            if (p.getDestination()==to) {
+                return;
+            }
             System.out.println(p.getDestination().getName());
 
             for (Connection con : p.getDestination().getConnections()) {
@@ -73,14 +74,15 @@ public class Dijkstra {
                         id++;
                         connectedCity.setId(id);
                         done[id] = new Path(connectedCity, p.getDestination(), con.getTime() + done[previousId].getDist());
-                        priorityQueue.bubble(done[id]);
+                        priorityQueue.bubble(done[connectedCity.getId()]);
                     } else {
                         Integer currentId = connectedCity.getId();
-                        if ((done[currentId].getDist() -done[previousId].getDist()) > con.getTime() ){
+                        if (done[currentId].getDist() > (con.getTime()+done[previousId].getDist())) {
                             done[currentId] = new Path(connectedCity, p.getDestination(), con.getTime() + done[previousId].getDist());
                             // priorityQueue.updateElement(done[currentId]);
                         }
                     }
+                    System.out.println(done[connectedCity.getId()].getDestination().getId());
                 }
             }
         }
