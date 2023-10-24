@@ -20,16 +20,12 @@ public class Map {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
-                // System.out.println("row 0 : " + row[0]);
-                // System.out.println("row 1 : " + row[1]);
-                // System.out.println("row 2 : " + row[2]);
                 String firstCity = row[0];
                 String secondCity = row[1];
-                int time = Integer.valueOf(row[2]);
-
                 City first = lookup(firstCity);
 
                 City second = lookup(secondCity);
+                int time = Integer.valueOf(row[2]);
 
                 first.connect(second, time);
 

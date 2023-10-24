@@ -2,7 +2,7 @@ public class Naive {
     public static void main(String[] args) {
         Map map = new Map("src\\trains.csv");
         args = new String[3];
-        args[2] = "800";
+        args[2] = "1000";
         Integer max = Integer.valueOf(args[2]);
         String startingCity[] = { "Malmö", "Malmö", "Göteborg", "Göteborg", "Stockholm", "Stockholm", "Sundsvall",
                 "Umeå" };
@@ -36,7 +36,6 @@ public class Naive {
             if (from.connections != null) {
                 Connection conn = from.connections[i];
                 if (conn != null) {
-
 
                         int timeNext = shortest(conn.getDestination(), to, max - conn.getTime());
                         if (timeNext != -1 && (shrt- conn.getTime()) > timeNext) {

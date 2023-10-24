@@ -52,7 +52,7 @@ public class Paths {
 
                         if (timeNext != null && (shrt - conn.getTime()) > timeNext) {
                             shrt = timeNext + conn.getTime();
-                            if (maximumLength == null || conn.getTime() > maximumLength) {
+                             if (maximumLength == null || conn.getTime() > maximumLength) {
                                 maximumLength = timeNext + conn.getTime();
                             }
                         }

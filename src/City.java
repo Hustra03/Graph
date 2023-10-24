@@ -7,18 +7,9 @@ public class City {
 
     City(String name) {
         this.cityName = name;
-        this.connections = new Connection[541];
+        this.connections = new Connection[mod];
         this.id=null;
     }
-
-    private Integer hash(String name) {
-        int hash = 0;
-        for (int i = 0; i < name.length(); i++) {
-            hash = (hash * 31 % mod) + name.charAt(i);
-        }
-        return hash % mod;
-    }
-
     public void connect(City toConnect, int time) {
         int hash = hash(toConnect.getName());
         while (true) {
@@ -30,6 +21,15 @@ public class City {
         }
         
     }
+    private Integer hash(String name) {
+        int hash = 0;
+        for (int i = 0; i < name.length(); i++) {
+            hash = (hash * 31 % mod) + name.charAt(i);
+        }
+        return hash % mod;
+    }
+
+
 
     public String getName() {
         return cityName;
