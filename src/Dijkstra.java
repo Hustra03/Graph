@@ -43,9 +43,7 @@ public class Dijkstra {
                     } else {
                         System.out.print(" |To Start: " + fromCity.getName());
                     }
-                    System.out.print(" |Distance: " + p.getDist());
-
-                    System.out.println(" |Id: " + p.getIndex());
+                    System.out.println(" |Distance: " + p.getDist());
                 }
             }
             System.out.println(time + " ms");
@@ -59,7 +57,7 @@ public class Dijkstra {
             return;
         }
 
-        done[currentPath.getIndex()] = currentPath;
+        done[currentPath.getDestination().getId()] = currentPath;
         System.out.println(currentPath.getDestination());
 
         if (from.connections != null) {
@@ -75,16 +73,15 @@ public class Dijkstra {
                         System.out.println(connectedCity.getName());
 
                         if (connectedCity.getId() != null) {
-                            if (done[currentPath.getIndex()].getDist() > conn.getTime()) {
-                                done[currentPath.getIndex()] = new Path(connectedCity, from, conn.getTime(),
-                                        connectedCity.getId());
+                            if (done[connectedCity.getId()].getDist() > conn.getTime()) {
+                                done[connectedCity.getId()] = new Path(connectedCity, from, conn.getTime());
                             }
 
                         } else {
                             id++;
                             connectedCity.setId(id);
-                            done[id] = new Path(null, from, conn.getTime(), id);
-                            priorityQueue.bubble(new Path(connectedCity, from, conn.getTime(), id));
+                            done[id] = new Path(null, from, conn.getTime());
+                            priorityQueue.bubble(new Path(connectedCity, from, conn.getTime()));
 
                         }
                         findPaths(connectedCity, to, id);
@@ -115,14 +112,13 @@ public class Dijkstra {
                     if (connectedCity.getId() == null) {
                         id++;
                         connectedCity.setId(id);
-                        done[id] = new Path(connectedCity, from, conn.getTime(), id);
+                        done[id] = new Path(connectedCity, from, conn.getTime());
                         done[id].setDist(done[id].getDist() + done[id - 1].getDist());
                         findPaths2(connectedCity, to, id);
 
                     } else {
                         if (done[connectedCity.getId()].getDist() > conn.getTime()) {
-                            done[connectedCity.getId()] = new Path(connectedCity, from, conn.getTime(),
-                                    connectedCity.getId());
+                            done[connectedCity.getId()] = new Path(connectedCity, from, conn.getTime());
                         }
                     }
 
@@ -135,7 +131,7 @@ public class Dijkstra {
 
         int id = 0;
         from.setId(id);
-        done[id] = new Path(from, from, 0, 0);
+        done[id] = new Path(from, from, 0);
         priorityQueue.bubble(done[id]);
 
         while (priorityQueue.currentMaxIndex != 0) {
@@ -146,15 +142,16 @@ public class Dijkstra {
                     City connectedCity = con.getDestination();
 
                     System.out.println(connectedCity.getName());
-                    
+
                     if (connectedCity.getId() == null) {
                         id++;
                         connectedCity.setId(id);
-                        done[id] = new Path(connectedCity, from, con.getTime(), id);
+                        done[id] = new Path(connectedCity, from, con.getTime());
                         priorityQueue.bubble(done[id]);
                     } else {
-                        if (done[connectedCity.getId()].getDist() > con.getTime()) {
-                            done[connectedCity.getId()].setDist(con.getTime());
+                        int currentId= connectedCity.getId();
+                        if (done[currentId].getDist() > con.getTime()) {
+                            done[currentId]=new Path(connectedCity, from, con.getTime());
                         }
                     }
                 }

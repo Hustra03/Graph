@@ -23,7 +23,7 @@ public class ArrayHeap {
         }
 
         while ((previousPostion >= 0) && (previousPostion <= heap.length - 1)
-                && (heap[currentPosition].getIndex() < heap[previousPostion].getIndex())) {
+                && (heap[currentPosition].getDist() < heap[previousPostion].getDist())) {
             Path tempValue = heap[currentPosition];
             heap[previousPostion] = heap[currentPosition];
             heap[currentPosition] = tempValue;
@@ -60,7 +60,7 @@ public class ArrayHeap {
         int nextIndexRight = (currentIndex) * 2 + 2;
 
         if (nextIndexLeft < currentMaxIndex) {
-            if (heap[currentIndex].getIndex() > heap[nextIndexLeft].getIndex() ) {
+            if (heap[currentIndex].getDist() > heap[nextIndexLeft].getDist() ) {
                 if (nextIndexRight >= currentMaxIndex) {
                     level += 1;
                     Path tempValue = heap[nextIndexLeft];
@@ -70,7 +70,7 @@ public class ArrayHeap {
                 } 
                 else
                 {
-                    if (heap[nextIndexRight].getIndex()  >= heap[nextIndexLeft].getIndex() ) {
+                    if (heap[nextIndexRight].getDist()  >= heap[nextIndexLeft].getDist() ) {
                         
                     level += 1;
                     Path tempValue = heap[nextIndexLeft];
@@ -82,7 +82,7 @@ public class ArrayHeap {
             }
         }
         if (nextIndexRight < currentMaxIndex) {
-            if (heap[currentIndex].getIndex()  > heap[nextIndexRight].getIndex() ) {
+            if (heap[currentIndex].getDist()  > heap[nextIndexRight].getDist() ) {
 
                 level += 1;
                 Path tempValue = heap[nextIndexRight];
