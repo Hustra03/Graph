@@ -41,6 +41,19 @@ public class ArrayHeap {
 
     }
 
+    public void updateElement(Path elementToUpdate)
+    {
+        for (Path path : heap) {
+            if (path!=null) {
+                if (path.getDestination().getId()==elementToUpdate.getDestination().getId()) {
+                path=elementToUpdate;
+                return;
+            }
+            }
+            
+        }
+    }
+
     public Path sink() {
         Path returnValue = heap[0];
 
