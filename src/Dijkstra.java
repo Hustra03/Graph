@@ -2,12 +2,10 @@ public class Dijkstra {
 
     static Path done[];
     static ArrayHeap priorityQueue;
-    static Integer id;
 
     public Dijkstra(int Length) {
         this.done = new Path[Length];
         this.priorityQueue = new ArrayHeap(Length);
-        this.id = 0;
     }
 
     public static void main(String[] args) {
@@ -30,9 +28,7 @@ public class Dijkstra {
             City toCity = map.lookup(to);
 
             long t0 = System.nanoTime();
-            priorityQueue.bubble(new Path(fromCity, null, 0, 0));
-            done[0]= new Path(fromCity, null, 0, 0);
-            findPaths2(fromCity, toCity);
+            findPaths3(fromCity, toCity);
             long time = (System.nanoTime() - t0) / 1_000_000;
             for (Path p : done) {
                 if (p != null) {
@@ -56,8 +52,7 @@ public class Dijkstra {
         }
     }
 
-    public static void findPaths(City from, City to) {
-
+    public static void findPaths(City from, City to, int id) {
         Path currentPath = priorityQueue.sink();
 
         if (currentPath.getDestination() == to) {
@@ -92,7 +87,7 @@ public class Dijkstra {
                             priorityQueue.bubble(new Path(connectedCity, from, conn.getTime(), id));
 
                         }
-                        findPaths(connectedCity, to);
+                        findPaths(connectedCity, to, id);
 
                     }
 
@@ -102,7 +97,7 @@ public class Dijkstra {
 
     }
 
-    public static void findPaths2(City from, City to) {
+    public static void findPaths2(City from, City to, int id) {
 
         if (from == to) {
             return;
@@ -121,15 +116,47 @@ public class Dijkstra {
                         id++;
                         connectedCity.setId(id);
                         done[id] = new Path(connectedCity, from, conn.getTime(), id);
-                        done[id].setDist(done[id].getDist() + done[id-1].getDist());
-                        findPaths2(connectedCity,to);
+                        done[id].setDist(done[id].getDist() + done[id - 1].getDist());
+                        findPaths2(connectedCity, to, id);
 
                     } else {
                         if (done[connectedCity.getId()].getDist() > conn.getTime()) {
-                            done[connectedCity.getId()] = new Path(connectedCity, from, conn.getTime(),connectedCity.getId());
+                            done[connectedCity.getId()] = new Path(connectedCity, from, conn.getTime(),
+                                    connectedCity.getId());
                         }
                     }
+
+                }
+            }
+        }
+    }
+
+    public static void findPaths3(City from, City to) {
+
+        int id = 0;
+        from.setId(id);
+        done[id] = new Path(from, from, 0, 0);
+        priorityQueue.bubble(done[id]);
+
+        while (priorityQueue.currentMaxIndex != 0) {
+            Path p = priorityQueue.sink();
+            for (Connection con : p.getDestination().getConnections()) {
+                if (con != null) {
+
+                    City connectedCity = con.getDestination();
+
+                    System.out.println(connectedCity.getName());
                     
+                    if (connectedCity.getId() == null) {
+                        id++;
+                        connectedCity.setId(id);
+                        done[id] = new Path(connectedCity, from, con.getTime(), id);
+                        priorityQueue.bubble(done[id]);
+                    } else {
+                        if (done[connectedCity.getId()].getDist() > con.getTime()) {
+                            done[connectedCity.getId()].setDist(con.getTime());
+                        }
+                    }
                 }
             }
         }
