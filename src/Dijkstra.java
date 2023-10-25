@@ -16,7 +16,7 @@ public class Dijkstra {
 
         String startingCity[] = { "Stockholm" };
 
-        String endingCity[] = { "Gävle" };
+        String endingCity[] = { "Uppsala" };
 
         for (int i = 0; i < startingCity.length; i++) {
 

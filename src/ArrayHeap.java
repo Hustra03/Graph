@@ -51,6 +51,7 @@ public class ArrayHeap {
         }
         heap[0] = heap[currentMaxIndex - 1];
         sinkElement(0, 0);
+        
         currentMaxIndex -= 1;
 
         return returnValue;
