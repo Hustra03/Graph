@@ -2,7 +2,7 @@ public class Naive {
     public static void main(String[] args) {
         Map map = new Map("src\\trains.csv");
         args = new String[3];
-        args[2] = "1000";
+        args[2] = "800";
         Integer max = Integer.valueOf(args[2]);
         String startingCity[] = { "Malmö", "Malmö", "Göteborg", "Göteborg", "Stockholm", "Stockholm", "Sundsvall",
                 "Umeå" };
