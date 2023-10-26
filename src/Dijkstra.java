@@ -37,7 +37,7 @@ public class Dijkstra {
             City toCity = map.lookup(to);
 
             long t0 = System.nanoTime();
-            findPaths(fromCity, toCity);
+            findPaths(fromCity, null);
             long time = (System.nanoTime() - t0);
 
             System.out.println("Shortest Path From " + from);
