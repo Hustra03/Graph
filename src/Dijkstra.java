@@ -1,26 +1,31 @@
+import java.util.PriorityQueue;
+
 public class Dijkstra {
 
     static Path done[];
-    static ArrayHeap priorityQueue;
+    static PriorityQueue<Path> priorityQueue;
     static ArrayHeapInt priorityQueue2;
-    static final int Length = 300;
+    Map map;
 
-    public Dijkstra() {
-        this.done = new Path[Length];
-        this.priorityQueue = new ArrayHeap(Length);
+    public Dijkstra(Map map) {
+        this.map=map;
+        this.done = new Path[map.id+1];
+        this.priorityQueue = new PriorityQueue();
         String fileTemp = "src\\europe.csv";
         String fileTemp2 = "src\\trains.csv";
     }
 
     public static void main(String[] args) {
 
-        String file = "src\\trains.csv";
+        String file = "src\\europe.csv";
 
         Map map = new Map(file);
 
-        String startingCity[] = { "Umeå" };
+        Dijkstra d = new Dijkstra(map);
 
-        String endingCity[] = { "Göteborg" };
+        String startingCity[] = { "Stockholm" };
+
+        String endingCity[] = { "Malmö" };
 
         for (int i = 0; i < endingCity.length; i++) {
 
@@ -32,7 +37,7 @@ public class Dijkstra {
             City toCity = map.lookup(to);
 
             long t0 = System.nanoTime();
-            findPathsIntQueue(fromCity, toCity);
+            findPaths(fromCity, toCity);
             long time = (System.nanoTime() - t0);
 
             System.out.println("Shortest Path From " + from);
@@ -40,7 +45,7 @@ public class Dijkstra {
             for (Path p : done) {
                 if (p != null) {
 
-                    //System.out.print("From: " + p.getPrevious().getName() + " | ");
+                    // System.out.print("From: " + p.getPrevious().getName() + " | ");
 
                     System.out.print("To: " + p.getDestination().getName());
 
@@ -50,72 +55,46 @@ public class Dijkstra {
                 }
             }
 
-            time /= 1_000_000;
+            time /= 1_000;
             System.out.println(time + " ms");
 
             // System.out.println(time + " ns");
-            map = new Map(file);
+            //Dijstra is a Ordo (n * log(n)) search function
         }
     }
 
     public static void findPaths(City from, City to) {
 
-        done = new Path[Length];
-        priorityQueue = new ArrayHeap(Length);
+        priorityQueue.add(new Path(from));
 
-        for (Path path : done) {
-            if (path != null) {
-                path.getDestination().setId(null);
-            }
-        }
+        while (!priorityQueue.isEmpty()) {
+            
+            Path p = priorityQueue.remove();
 
-        int id = 0;
-        from.setId(id);
-        done[id] = new Path(from, from, 0);
-        priorityQueue.bubble(done[id]);
+            City c = p.getDestination();
 
-        while (priorityQueue.currentMaxIndex > 0) {
-            Path p = priorityQueue.sink();
-
-            if (p.getDestination() == to) {
+            if (done[c.getId()]==null) {
+                done[c.getId()]=p;
+                if (c==to) {
                 return;
+                }
             }
 
-            System.out.println(p.getDestination().getName());
+            Integer prevDist = p.getDist();
 
-            for (Connection con : p.getDestination().getConnections()) {
+            for (Connection con : c.getConnections()) {
                 if (con != null) {
-
-                    City connectedCity = con.getDestination();
-
-                    System.out.println(connectedCity.getName());
-
-                    Integer previousId = p.getDestination().getId();
-
-                    if (connectedCity.getId() == null) {
-                        id++;
-                        connectedCity.setId(id);
-                        done[id] = new Path(connectedCity, p.getDestination(),
-                                con.getTime() + done[previousId].getDist());
-                        priorityQueue.bubble(done[connectedCity.getId()]);
-
-                    } else {
-                        Integer currentId = connectedCity.getId();
-                        if (done[currentId].getDist() > (con.getTime() + done[previousId].getDist())) {
-
-                            done[currentId] = new Path(connectedCity, p.getDestination(),
-                                    con.getTime() + done[previousId].getDist());
-                        }
-                        System.out.println(97);
+                    City toNow = con.getDestination();
+                    if (done[toNow.getId()]==null) {
+                        priorityQueue.add(new Path(toNow, c, prevDist + con.getTime()));
                     }
-                    System.out.println(done[connectedCity.getId()].getDestination().getId());
                 }
             }
         }
 
     }
 
-    public static void findPathsIntQueue(City from, City to) {
+    /*public static void findPathsIntQueue(City from, City to) {
 
         done = new Path[Length];
         priorityQueue2 = new ArrayHeapInt(Length);
@@ -128,8 +107,7 @@ public class Dijkstra {
         while (priorityQueue2.currentMaxIndex > 0) {
             Path p = done[priorityQueue2.sink()];
 
-            if (p.getPrevious() == to) {
-                System.out.println("Size : " + (id + 1));
+            if (p.getDestination() == to) {
                 return;
             }
 
@@ -147,23 +125,35 @@ public class Dijkstra {
                     if (connectedCity.getId() == null) {
                         id++;
                         connectedCity.setId(id);
-                        done[id] = new Path(connectedCity, p.getDestination(), con.getTime() + done[previousId].getDist());
+                        done[id] = new Path(connectedCity, p.getDestination(),
+                                con.getTime() + done[previousId].getDist());
                         priorityQueue2.bubble(connectedCity.getId());
 
                     } else {
                         Integer currentId = connectedCity.getId();
+
                         if (done[currentId].getDist() - con.getTime() > done[previousId].getDist()) {
 
-                            done[currentId] = new Path(connectedCity, p.getDestination(), con.getTime() + done[previousId].getDist());
-                            priorityQueue2.bubble(connectedCity.getId()); 
-                        } // System.out.println(97);
+                            done[currentId] = new Path(connectedCity, p.getDestination(),
+                                    con.getTime() + done[previousId].getDist());
+                            priorityQueue2.bubble(connectedCity.getId());
+
+                        } // System.out.println(97);}
+
+                        // Ask if this is an okey implemenetation or not, appears to work but may be
+                        // slower than the intended implementation
+                        // System.out.println(done[connectedCity.getId()].getDestination().getId());
                     }
-                    // Ask if this is an okey implemenetation or not, appears to work but may be slower than the intended implementation
-                    // System.out.println(done[connectedCity.getId()].getDestination().getId());
                 }
             }
+
         }
-
     }
-
+*/
+    // Annan Algorithm än den han beskrev i uppgiftsbeskrivningen, lägg till en
+    // boolean värde för varje stad som säger om kortast väg hittats, börja med att
+    // markera start som hittad, för alla andra skapa vägar genom tidigare väg +
+    // koppling, lägg till path mellan varje sann och dess osanna kopplinar till
+    // kön, ta bort
+    // den högst upp, sätt den till true
 }
