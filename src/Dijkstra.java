@@ -13,17 +13,16 @@ public class Dijkstra {
     }
 
     public static void main(String[] args) {
-        Map map = new Map("src\\europe.csv");
+
+        String file = "src\\trains.csv";
+
+        Map map = new Map(file);
 
         String startingCity[] = { "Umeå" };
 
-        String endingCity[] = { "Göteborg", "Köln", "Frankfurt", "Mannheim", "Saarbrucken", "Metz", "Paris",
-                "Luxenburg", "Liege", "Köln", "Bryssel", "Göttingen", "Hannover", "Nürnberg", "München",
-                "Wien", "Innsbruck", "Zürich", "Graz", "Verona", "Milano", "Venedig", "Bologna", "Prag"
-        };
+        String endingCity[] = { "Göteborg" };
 
         for (int i = 0; i < endingCity.length; i++) {
-            map = new Map("src\\europe.csv");
 
             String from = startingCity[0];
 
@@ -35,23 +34,27 @@ public class Dijkstra {
             long t0 = System.nanoTime();
             findPathsIntQueue(fromCity, toCity);
             long time = (System.nanoTime() - t0);
-            //time/=1_000_000;
 
-            System.out.println("From " + from);
+            System.out.println("Shortest Path From " + from);
 
-            /*
-             * for (Path p : done) {
-             * if (p != null) {
-             * 
-             * System.out.print("To: " + p.getDestination().getName());
-             * 
-             * System.out.print(" |Id: " + p.getDestination().getId());
-             * 
-             * System.out.println(" |Distance: " + p.getDist());
-             * }
-             * }
-             */
-            System.out.println(time + " ns");
+            for (Path p : done) {
+                if (p != null) {
+
+                    //System.out.print("From: " + p.getPrevious().getName() + " | ");
+
+                    System.out.print("To: " + p.getDestination().getName());
+
+                    System.out.print(" |Id: " + p.getDestination().getId());
+
+                    System.out.println(" |Distance: " + p.getDist());
+                }
+            }
+
+            time /= 1_000_000;
+            System.out.println(time + " ms");
+
+            // System.out.println(time + " ns");
+            map = new Map(file);
         }
     }
 
@@ -144,23 +147,22 @@ public class Dijkstra {
                     if (connectedCity.getId() == null) {
                         id++;
                         connectedCity.setId(id);
-                        done[id] = new Path(connectedCity, p.getDestination(),
-                                con.getTime() + done[previousId].getDist());
+                        done[id] = new Path(connectedCity, p.getDestination(), con.getTime() + done[previousId].getDist());
                         priorityQueue2.bubble(connectedCity.getId());
 
                     } else {
                         Integer currentId = connectedCity.getId();
                         if (done[currentId].getDist() - con.getTime() > done[previousId].getDist()) {
 
-                            done[currentId] = new Path(connectedCity, p.getDestination(),
-                                    con.getTime() + done[previousId].getDist());
+                            done[currentId] = new Path(connectedCity, p.getDestination(), con.getTime() + done[previousId].getDist());
+                            priorityQueue2.bubble(connectedCity.getId()); 
                         } // System.out.println(97);
                     }
+                    // Ask if this is an okey implemenetation or not, appears to work but may be slower than the intended implementation
                     // System.out.println(done[connectedCity.getId()].getDestination().getId());
                 }
             }
         }
-        System.out.println("Size : " + (id + 1));
 
     }
 
