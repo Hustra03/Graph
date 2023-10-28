@@ -16,15 +16,16 @@ public class Dijkstra {
 
     public static void main(String[] args) {
 
-        String file = "src\\trains.csv";
+        String file = "src\\europe.csv";
 
         Map map = new Map(file);
 
         Dijkstra d = new Dijkstra(map);
 
-        String startingCity[] = { "Sundsvall" };
+        String startingCity[] = { "Zaragoza" };
 
-        String endingCity[] = { "Umeå" };
+        String endingCity[] = {null, "Zaragoza", "Barcelona", "München", "Berlin", "Glasgow", "Wien", "Foggia",
+                "Malmö", "Fredrikshamn", "Stockholm", "Bukarest", null };
 
         for (int i = 0; i < endingCity.length; i++) {
 
@@ -32,16 +33,22 @@ public class Dijkstra {
 
             City fromCity = map.lookup(from);
 
-            String to = endingCity[i];
-            City toCity = map.lookup(to);
+            City toCity;
+            if (endingCity[i] != null) {
+                String to = endingCity[i];
+                toCity = map.lookup(to);
+            } else {
+                toCity = null;
+            }
 
             long t0 = System.nanoTime();
             findPaths(fromCity, toCity);
             long time = (System.nanoTime() - t0);
 
+            System.out.println("");
             System.out.println("Shortest Path From " + from);
 
-            int size=0;
+            int size = 0;
             for (Path p : done) {
                 if (p != null) {
 
@@ -54,18 +61,21 @@ public class Dijkstra {
 
                         System.out.println(" |Distance: " + p.getDist());
                     }
-                    size+=1;
+                    size += 1;
 
                 }
             }
 
-            
-            System.out.print("Size: " + size +"| ");
+            System.out.print("Size: " + size + "| ");
             time /= 1_000;
             System.out.println(time + " ms");
 
             // System.out.println(time + " ns");
             // Dijstra is a Ordo (n * log(n)) search function
+
+            map = new Map(file);
+
+            d = new Dijkstra(map);
         }
     }
 

@@ -5,6 +5,7 @@ public class Map {
 
     City cities[];
     Integer id;
+    Integer collisions;
     private final int mod = 541;
 
     private Integer hash(String name) {
@@ -16,6 +17,7 @@ public class Map {
     }
 
     public Map(String file) {
+        collisions=0;
         cities = new City[mod];
         id=0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -46,6 +48,7 @@ public class Map {
                 if (cities[hash].getName().equalsIgnoreCase(cityName)) {
                     return cities[hash];
                 } else {
+                    collisions+=1;
                     hash = (hash + 1) % mod;
                 }
             } else {
@@ -65,6 +68,7 @@ public class Map {
                 city.cityPrint();
             }
         }
+        System.out.println("Collisions :" + collisions);
 
     }
 }
